@@ -359,45 +359,6 @@ export default function ContactSection({ dark }) {
                 ))}
               </div>
             </div>
-
-            {/* Quote */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              style={{
-                position: "relative",
-                zIndex: 1,
-                marginTop: 28,
-                padding: "16px 18px",
-                borderRadius: 16,
-                background: "rgba(255,255,255,0.1)",
-                border: "1px solid rgba(255,255,255,0.15)",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 12,
-                  fontStyle: "italic",
-                  color: "rgba(255,255,255,0.8)",
-                  lineHeight: 1.6,
-                  margin: "0 0 6px",
-                }}
-              >
-                "Great things are done by a series of small things brought
-                together."
-              </p>
-              <p
-                style={{
-                  fontSize: 11,
-                  color: "rgba(255,255,255,0.45)",
-                  margin: 0,
-                }}
-              >
-                — Vincent Van Gogh
-              </p>
-            </motion.div>
           </div>
 
           {/* Right Panel — Form */}

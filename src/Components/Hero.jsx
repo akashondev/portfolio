@@ -84,43 +84,6 @@ export default function Hero({ dark }) {
           textAlign: "center",
         }}
       >
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "6px 16px",
-            borderRadius: 9999,
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            marginBottom: 32,
-            backgroundColor: dark
-              ? "rgba(52,211,153,0.1)"
-              : "rgba(5,150,105,0.1)",
-            color: dark ? "#34d399" : "#059669",
-            border: dark
-              ? "1px solid rgba(52,211,153,0.2)"
-              : "1px solid rgba(5,150,105,0.2)",
-          }}
-        >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              backgroundColor: "#34d399",
-              animation: "pulse 2s infinite",
-            }}
-          />
-          Available for Work
-        </motion.div>
-
         {/* Name */}
         <motion.h1
           initial={{ opacity: 0, y: -16 }}

@@ -124,7 +124,7 @@ export default function Navbar({ dark, setDark, activeSection }) {
                     style={{
                       padding: "8px 16px",
                       borderRadius: 9999,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: 500,
                       border: "none",
                       cursor: "pointer",
