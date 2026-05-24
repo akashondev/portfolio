@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { resumeData } from "../data.js";
 import { Mail, Phone } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import ContactSection from "./Contact"; 
+import ContactSection from "./Contact";
 
 const SOCIALS = [
   {
@@ -50,6 +50,36 @@ const IconBox = ({ Icon, bg, border, color, size = 34 }) => (
 export default function Footer({ dark }) {
   return (
     <>
+      <style>{`
+        .footer-grid {
+          display: flex;
+          flex-direction: row;
+          gap: 48px;
+        }
+
+        .footer-bottom {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+          .footer-grid {
+            flex-direction: column;
+            gap: 36px;
+          }
+
+          .footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+
+          .footer-socials-row {
+            flex-wrap: wrap;
+          }
+        }
+      `}</style>
+
       <ContactSection dark={dark} />
 
       <footer
@@ -59,12 +89,10 @@ export default function Footer({ dark }) {
         }}
       >
         <div
+          className="footer-grid"
           style={{
             maxWidth: 1100,
             margin: "0 auto",
-            display: "flex",
-            flexDirection: "row",
-            gap: 48,
             paddingBottom: 48,
             borderBottom: "1px solid rgba(255,255,255,0.08)",
           }}
@@ -109,8 +137,7 @@ export default function Footer({ dark }) {
               }}
             >
               Passionate about creating efficient, intuitive web solutions using
-              cutting-edge technologies. Turning complex problems into elegant,
-              user-friendly applications.
+              cutting-edge technologies.
             </p>
           </motion.div>
 
@@ -161,7 +188,11 @@ export default function Footer({ dark }) {
                 >
                   <IconBox Icon={Icon} />
                   <span
-                    style={{ fontSize: 13, color: "rgba(255,255,255,0.65)" }}
+                    style={{
+                      fontSize: 13,
+                      color: "rgba(255,255,255,0.65)",
+                      wordBreak: "break-all",
+                    }}
                   >
                     {label}
                   </span>
@@ -190,7 +221,10 @@ export default function Footer({ dark }) {
             >
               Connect
             </p>
-            <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+            <div
+              className="footer-socials-row"
+              style={{ display: "flex", flexDirection: "row", gap: 10 }}
+            >
               {SOCIALS.map(
                 ({ href, Icon, label, hoverBg, hoverBorder, hoverColor }) => (
                   <motion.a
@@ -213,6 +247,7 @@ export default function Footer({ dark }) {
                       fontSize: 13,
                       fontWeight: 600,
                       transition: "all 0.2s",
+                      whiteSpace: "nowrap",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = hoverBg;
@@ -237,6 +272,7 @@ export default function Footer({ dark }) {
 
         {/* Bottom bar */}
         <motion.div
+          className="footer-bottom"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -247,7 +283,6 @@ export default function Footer({ dark }) {
             padding: "20px 0",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
             flexWrap: "wrap",
             gap: 8,
           }}
@@ -280,11 +315,6 @@ export default function Footer({ dark }) {
             </motion.span>
           </p>
           <p
-            style={{ fontSize: 13, color: "rgba(255,255,255,0.25)", margin: 0 }}
-          >
-            Designed and built with React &amp; Tailwind CSS
-          </p>
-          <p
             style={{
               fontSize: 13,
               color: "rgba(255,255,255,0.25)",
@@ -293,20 +323,7 @@ export default function Footer({ dark }) {
               alignItems: "center",
               gap: 6,
             }}
-          >
-            <motion.span
-              animate={{ opacity: [1, 0.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#10b981",
-                display: "inline-block",
-              }}
-            />
-            Powered by Node.js
-          </p>
+          ></p>
         </motion.div>
       </footer>
     </>

@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { Mail, Phone } from "lucide-react";
 import { resumeData } from "../data";
 
 /* ── Section Header ── */
 function SectionHeader({ label, title, dark }) {
   return (
-    <div className="mb-12">
+    <div className="mb-10 md:mb-12">
       <p
         className={`text-xs font-bold tracking-[3px] uppercase mb-3 ${
           dark ? "text-emerald-400" : "text-emerald-600"
@@ -13,13 +14,15 @@ function SectionHeader({ label, title, dark }) {
       >
         {label}
       </p>
+
       <h2
-        className={`text-4xl md:text-5xl font-black tracking-tight mb-4 ${
+        className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4 ${
           dark ? "text-white" : "text-zinc-900"
         }`}
       >
         {title}
       </h2>
+
       <div className="w-14 h-1 rounded-full bg-gradient-to-r from-emerald-400 to-blue-500" />
     </div>
   );
@@ -28,14 +31,22 @@ function SectionHeader({ label, title, dark }) {
 /* ── FadeIn Animation ── */
 function FadeIn({ children, delay = 0, className = "" }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "-60px",
+  });
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 28 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.65,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
       className={className}
     >
       {children}
@@ -55,7 +66,9 @@ function AboutSection({ dark }) {
   return (
     <section
       id="about"
-      className={`py-28 px-6 ${dark ? "bg-[#0d0d14]" : "bg-zinc-50"}`}
+      className={`py-16 md:py-28 px-5 md:px-6 ${
+        dark ? "bg-[#0d0d14]" : "bg-zinc-50"
+      }`}
     >
       <div className="max-w-6xl mx-auto">
         <FadeIn>
@@ -66,11 +79,11 @@ function AboutSection({ dark }) {
           />
         </FadeIn>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Summary */}
           <FadeIn delay={0.1}>
             <p
-              className={`text-base leading-[1.85] ${
+              className={`text-sm md:text-base leading-[1.85] ${
                 dark ? "text-zinc-400" : "text-zinc-500"
               }`}
             >
@@ -81,7 +94,7 @@ function AboutSection({ dark }) {
           {/* Quick facts */}
           <FadeIn delay={0.2}>
             <div
-              className={`rounded-2xl border p-6 ${
+              className={`rounded-2xl border p-5 md:p-6 ${
                 dark ? "bg-[#16161f] border-white/6" : "bg-white border-black/6"
               }`}
             >
@@ -97,7 +110,7 @@ function AboutSection({ dark }) {
                 {facts.map(([label, val], i) => (
                   <div
                     key={label}
-                    className={`flex justify-between items-baseline py-3.5 ${
+                    className={`flex justify-between items-baseline py-3 md:py-3.5 gap-3 ${
                       i < facts.length - 1
                         ? `border-b ${
                             dark ? "border-white/5" : "border-black/5"
@@ -106,14 +119,15 @@ function AboutSection({ dark }) {
                     }`}
                   >
                     <dt
-                      className={`text-sm ${
+                      className={`text-xs md:text-sm shrink-0 ${
                         dark ? "text-zinc-500" : "text-zinc-400"
                       }`}
                     >
                       {label}
                     </dt>
+
                     <dd
-                      className={`text-sm font-semibold text-right max-w-[60%] break-words ${
+                      className={`text-xs md:text-sm font-semibold text-right break-all max-w-[60%] ${
                         dark ? "text-zinc-200" : "text-zinc-800"
                       }`}
                     >
@@ -135,7 +149,9 @@ function Skills({ dark }) {
   return (
     <section
       id="skills"
-      className={`py-28 px-6 ${dark ? "bg-[#0a0a0f]" : "bg-white"}`}
+      className={`py-16 md:py-28 px-5 md:px-6 ${
+        dark ? "bg-[#0a0a0f]" : "bg-white"
+      }`}
     >
       <div className="max-w-6xl mx-auto">
         <FadeIn>
@@ -146,7 +162,7 @@ function Skills({ dark }) {
           />
         </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4">
           {resumeData.skills.map((group, gi) => (
             <motion.div
               key={group.category}
@@ -155,21 +171,21 @@ function Skills({ dark }) {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: gi * 0.08, duration: 0.55 }}
               whileHover={{ y: -4 }}
-              className={`rounded-2xl p-5 border transition-shadow duration-300 hover:shadow-xl ${
+              className={`rounded-2xl p-4 md:p-5 border transition-shadow duration-300 hover:shadow-xl ${
                 dark
                   ? "bg-[#16161f] border-white/6 hover:shadow-emerald-500/5"
                   : "bg-zinc-50 border-black/6 hover:shadow-emerald-500/10"
               }`}
             >
               <p
-                className={`text-[10px] font-black tracking-[2px] uppercase mb-4 ${
+                className={`text-[10px] font-black tracking-[2px] uppercase mb-3 md:mb-4 ${
                   dark ? "text-emerald-400" : "text-emerald-600"
                 }`}
               >
                 {group.category}
               </p>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 md:gap-2">
                 {group.items.map((item) => (
                   <span
                     key={item}
@@ -191,12 +207,90 @@ function Skills({ dark }) {
   );
 }
 
-/* ── Main Export (Wrapper) ── */
+/* ── Contact Section ── */
+function ContactSection({ dark }) {
+  return (
+    <section
+      id="contact"
+      className={`py-16 md:py-24 px-5 md:px-6 ${
+        dark ? "bg-[#111827]" : "bg-zinc-100"
+      }`}
+    >
+      <div className="max-w-6xl mx-auto">
+        <FadeIn>
+          <SectionHeader label="Contact" title="Get in touch" dark={dark} />
+        </FadeIn>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {/* Left */}
+          <div>
+            <h3 className="text-3xl font-black text-emerald-400 mb-4">
+              Akash Vishwakarma
+            </h3>
+
+            <p
+              className={`text-sm leading-7 ${
+                dark ? "text-zinc-400" : "text-zinc-600"
+              }`}
+            >
+              Passionate about creating efficient, intuitive web solutions using
+              cutting-edge technologies.
+            </p>
+          </div>
+          Contact Info
+          <div className="space-y-6">
+            {/* Email */}
+            <div className="flex items-start gap-3 min-w-0">
+              <div className="p-3 rounded-xl bg-white/5 shrink-0">
+                <Mail size={18} />
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-widest text-zinc-500 mb-1">
+                  Email
+                </p>
+
+                <p className="break-all text-sm text-zinc-300">
+                  {resumeData.email}
+                </p>
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div className="flex items-start gap-3 min-w-0">
+              <div className="p-3 rounded-xl bg-white/5 shrink-0">
+                <Phone size={18} />
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-widest text-zinc-500 mb-1">
+                  Phone
+                </p>
+
+                <p className="text-sm text-zinc-300">(+91) 9324464981</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t border-white/5 mt-14 pt-6 flex flex-col md:flex-row justify-between gap-4">
+          <p className="text-sm text-zinc-500">
+            © 2026 Akash Vishwakarma. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Main Export ── */
 export default function About({ dark }) {
   return (
     <>
       <AboutSection dark={dark} />
       <Skills dark={dark} />
+      <ContactSection dark={dark} />
     </>
   );
 }

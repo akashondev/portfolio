@@ -1,6 +1,6 @@
-//contact.jsx
+// Contact.jsx — 
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { resumeData } from "../data.js";
@@ -47,6 +47,20 @@ const CONTACTS = [
   },
 ];
 
+// ── Responsive hook ──────────────────────────────────────────────────────────
+function useWindowWidth() {
+  const [width, setWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
+  useEffect(() => {
+    const handle = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handle);
+    return () => window.removeEventListener("resize", handle);
+  }, []);
+  return width;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 const FadeIn = ({ children, delay = 0, y = 28 }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -76,11 +90,15 @@ const BLOB = (style) => (
   />
 );
 
+// ── Component ─────────────────────────────────────────────────────────────────
 export default function ContactSection({ dark }) {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const width = useWindowWidth();
+  const isMobile = width < 768;
 
   const handleChange = (e) =>
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -155,11 +173,19 @@ export default function ContactSection({ dark }) {
   });
 
   return (
-    <section id="contact" style={{ padding: "80px 24px", background: t.bg }}>
+    <section
+      id="contact"
+      style={{
+        padding: isMobile ? "60px 16px" : "80px 24px",
+        background: t.bg,
+      }}
+    >
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
-        {/* Heading */}
+        {/* ── Heading ── */}
         <FadeIn>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div
+            style={{ textAlign: "center", marginBottom: isMobile ? 32 : 48 }}
+          >
             <motion.p
               initial={{ opacity: 0, letterSpacing: "0.4em" }}
               whileInView={{ opacity: 1, letterSpacing: "0.2em" }}
@@ -181,7 +207,7 @@ export default function ContactSection({ dark }) {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
               style={{
-                fontSize: 42,
+                fontSize: isMobile ? 28 : 42,
                 fontWeight: 900,
                 letterSpacing: "-0.03em",
                 color: t.pri,
@@ -208,7 +234,7 @@ export default function ContactSection({ dark }) {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.35 }}
               style={{
-                fontSize: 15,
+                fontSize: isMobile ? 13 : 15,
                 color: t.muted,
                 maxWidth: 420,
                 margin: "0 auto",
@@ -220,7 +246,7 @@ export default function ContactSection({ dark }) {
           </div>
         </FadeIn>
 
-        {/* Card */}
+        {/* ── Card ── */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -228,23 +254,24 @@ export default function ContactSection({ dark }) {
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           style={{
             display: "flex",
-            flexDirection: "row",
+            // Stack vertically on mobile, side-by-side on desktop
+            flexDirection: isMobile ? "column" : "row",
             borderRadius: 24,
             overflow: "hidden",
             boxShadow: dark
               ? "0 25px 60px rgba(0,0,0,0.4)"
               : "0 25px 60px rgba(16,185,129,0.12)",
-            minHeight: 480,
+            minHeight: isMobile ? "auto" : 480,
           }}
         >
-          {/* Left Panel */}
+          {/* ── Left Panel (contacts) ── */}
           <div
             style={{
-              width: "38%",
+              width: isMobile ? "100%" : "38%",
               flexShrink: 0,
               background: "linear-gradient(135deg,#10b981,#3b82f6)",
               color: "#fff",
-              padding: "36px 28px",
+              padding: isMobile ? "28px 20px" : "36px 28px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -261,7 +288,11 @@ export default function ContactSection({ dark }) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                style={{ fontSize: 22, fontWeight: 700, margin: "0 0 6px" }}
+                style={{
+                  fontSize: isMobile ? 18 : 22,
+                  fontWeight: 700,
+                  margin: "0 0 6px",
+                }}
               >
                 Let's Connect
               </motion.h3>
@@ -273,15 +304,21 @@ export default function ContactSection({ dark }) {
                 style={{
                   fontSize: 13,
                   color: "rgba(255,255,255,0.7)",
-                  margin: "0 0 28px",
+                  margin: "0 0 20px",
                   lineHeight: 1.6,
                 }}
               >
                 Ready to discuss your next project or just want to say hello?
               </motion.p>
 
+              {/* On mobile: 2-column grid for contact items */}
               <div
-                style={{ display: "flex", flexDirection: "column", gap: 14 }}
+                style={{
+                  display: isMobile ? "grid" : "flex",
+                  gridTemplateColumns: isMobile ? "1fr 1fr" : undefined,
+                  flexDirection: isMobile ? undefined : "column",
+                  gap: isMobile ? 12 : 14,
+                }}
               >
                 {CONTACTS.map(({ label, value, href, Icon }, i) => (
                   <motion.a
@@ -305,8 +342,10 @@ export default function ContactSection({ dark }) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 12,
+                      gap: 10,
                       textDecoration: "none",
+                      // On mobile: keep items compact
+                      overflow: "hidden",
                     }}
                   >
                     <motion.div
@@ -316,8 +355,8 @@ export default function ContactSection({ dark }) {
                       }}
                       transition={{ duration: 0.2 }}
                       style={{
-                        width: 40,
-                        height: 40,
+                        width: isMobile ? 34 : 40,
+                        height: isMobile ? 34 : 40,
                         borderRadius: 10,
                         background: "rgba(255,255,255,0.15)",
                         display: "flex",
@@ -326,7 +365,7 @@ export default function ContactSection({ dark }) {
                         flexShrink: 0,
                       }}
                     >
-                      <Icon size={17} color="#fff" />
+                      <Icon size={isMobile ? 15 : 17} color="#fff" />
                     </motion.div>
                     <div style={{ minWidth: 0 }}>
                       <p
@@ -343,7 +382,7 @@ export default function ContactSection({ dark }) {
                       </p>
                       <p
                         style={{
-                          fontSize: 13,
+                          fontSize: isMobile ? 11 : 13,
                           fontWeight: 500,
                           color: "rgba(255,255,255,0.92)",
                           margin: 0,
@@ -361,12 +400,12 @@ export default function ContactSection({ dark }) {
             </div>
           </div>
 
-          {/* Right Panel — Form */}
+          {/* ── Right Panel (form) ── */}
           <div
             style={{
               flex: 1,
               background: t.card,
-              padding: "36px 32px",
+              padding: isMobile ? "24px 20px" : "36px 32px",
               display: "flex",
               flexDirection: "column",
             }}
@@ -377,7 +416,7 @@ export default function ContactSection({ dark }) {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               style={{
-                fontSize: 22,
+                fontSize: isMobile ? 18 : 22,
                 fontWeight: 700,
                 color: t.pri,
                 margin: "0 0 20px",
@@ -455,7 +494,8 @@ export default function ContactSection({ dark }) {
                     style={inputStyle({
                       flex: 1,
                       resize: "none",
-                      minHeight: 100,
+                      // Slightly taller on mobile so it doesn't feel cramped
+                      minHeight: isMobile ? 120 : 100,
                     })}
                     onFocus={(e) => (e.target.style.borderColor = "#10b981")}
                     onBlur={(e) => (e.target.style.borderColor = t.inputBdr)}
