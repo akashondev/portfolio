@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Mail, Phone } from "lucide-react";
 import { resumeData } from "../data";
 
 /* ── Section Header ── */
@@ -207,90 +206,12 @@ function Skills({ dark }) {
   );
 }
 
-/* ── Contact Section ── */
-function ContactSection({ dark }) {
-  return (
-    <section
-      id="contact"
-      className={`py-16 md:py-24 px-5 md:px-6 ${
-        dark ? "bg-[#111827]" : "bg-zinc-100"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto">
-        <FadeIn>
-          <SectionHeader label="Contact" title="Get in touch" dark={dark} />
-        </FadeIn>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Left */}
-          <div>
-            <h3 className="text-3xl font-black text-emerald-400 mb-4">
-              Akash Vishwakarma
-            </h3>
-
-            <p
-              className={`text-sm leading-7 ${
-                dark ? "text-zinc-400" : "text-zinc-600"
-              }`}
-            >
-              Passionate about creating efficient, intuitive web solutions using
-              cutting-edge technologies.
-            </p>
-          </div>
-          Contact Info
-          <div className="space-y-6">
-            {/* Email */}
-            <div className="flex items-start gap-3 min-w-0">
-              <div className="p-3 rounded-xl bg-white/5 shrink-0">
-                <Mail size={18} />
-              </div>
-
-              <div className="min-w-0">
-                <p className="text-xs uppercase tracking-widest text-zinc-500 mb-1">
-                  Email
-                </p>
-
-                <p className="break-all text-sm text-zinc-300">
-                  {resumeData.email}
-                </p>
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div className="flex items-start gap-3 min-w-0">
-              <div className="p-3 rounded-xl bg-white/5 shrink-0">
-                <Phone size={18} />
-              </div>
-
-              <div className="min-w-0">
-                <p className="text-xs uppercase tracking-widest text-zinc-500 mb-1">
-                  Phone
-                </p>
-
-                <p className="text-sm text-zinc-300">(+91) 9324464981</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="border-t border-white/5 mt-14 pt-6 flex flex-col md:flex-row justify-between gap-4">
-          <p className="text-sm text-zinc-500">
-            © 2026 Akash Vishwakarma. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ── Main Export ── */
 export default function About({ dark }) {
   return (
     <>
       <AboutSection dark={dark} />
       <Skills dark={dark} />
-      <ContactSection dark={dark} />
     </>
   );
 }
