@@ -111,9 +111,9 @@ export default function Hero({ dark }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
           style={{
-            fontFamily: "Inter",
+            fontFamily: "inter",
             fontSize: "clamp(20px, 3vw, 30px)",
-            fontWeight: 700,
+            fontWeight: 600,
             marginBottom: 24,
             height: 45,
             display: "flex",
@@ -330,22 +330,6 @@ export default function Hero({ dark }) {
           display: block;
         }
       `}</style>
-
-      {/* Bottom fade */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 40,
-          pointerEvents: "none",
-          background: dark
-            ? "linear-gradient(to bottom, transparent, #09090b)"
-            : "linear-gradient(to bottom, transparent, #ffffff)",
-          zIndex: 20,
-        }}
-      />
     </section>
   );
 }
