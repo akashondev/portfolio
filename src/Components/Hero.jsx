@@ -111,7 +111,7 @@ export default function Hero({ dark }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
           style={{
-            fontFamily: "inter",
+            fontFamily: "Google Sans Text",
             fontSize: "clamp(20px, 3vw, 30px)",
             fontWeight: 600,
             marginBottom: 24,
@@ -167,7 +167,9 @@ export default function Hero({ dark }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35 }}
           style={{
+            fontFamily: "Google Sans Text",
             fontSize: "clamp(15px, 2vw, 18px)",
+            fontWeight: 420,
             lineHeight: 1.7,
             maxWidth: 520,
             margin: "0 auto 40px",

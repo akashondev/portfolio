@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../data";
 
@@ -13,12 +13,28 @@ import {
 } from "lucide-react";
 
 export default function Navbar({ dark, setDark, activeSection }) {
+
+  const dropdownRef = useRef(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
 
   const [scrolled, setScrolled] = useState(false);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setResumeOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -75,6 +91,7 @@ export default function Navbar({ dark, setDark, activeSection }) {
               : "0 4px 20px rgba(0,0,0,0.08)"
             : "none",
           transition: "all 0.5s ease",
+          fontFamily: "Google Sans Text",
         }}
       >
         <div
@@ -166,7 +183,7 @@ export default function Navbar({ dark, setDark, activeSection }) {
               })}
 
               {/* Resume Dropdown */}
-              <div style={{ position: "relative" }}>
+              <div ref={dropdownRef} style={{ position: "relative" }}>
                 <button
                   onClick={() => setResumeOpen(!resumeOpen)}
                   style={{
