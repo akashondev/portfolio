@@ -13,13 +13,10 @@ import {
 } from "lucide-react";
 
 export default function Navbar({ dark, setDark, activeSection }) {
-
   const dropdownRef = useRef(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
-
   const [scrolled, setScrolled] = useState(false);
-
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -28,42 +25,30 @@ export default function Navbar({ dark, setDark, activeSection }) {
         setResumeOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-
     const onResize = () => setIsMobile(window.innerWidth < 768);
-
     window.addEventListener("scroll", onScroll);
-
     window.addEventListener("resize", onResize);
-
     return () => {
       window.removeEventListener("scroll", onScroll);
-
       window.removeEventListener("resize", onResize);
     };
   }, []);
 
   const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-    });
-
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMobileOpen(false);
   };
 
   const navBg = scrolled
     ? dark
-      ? "rgba(9, 9, 11, 0.75)" // dark + scrolled → blurred dark
-      : "rgba(255, 255, 255, 0.75)" // light + scrolled → blurred white
+      ? "rgba(9, 9, 11, 0.75)"
+      : "rgba(255, 255, 255, 0.75)"
     : "transparent";
 
   const borderBottom = scrolled
@@ -90,7 +75,8 @@ export default function Navbar({ dark, setDark, activeSection }) {
               ? "0 4px 30px rgba(0,0,0,0.4)"
               : "0 4px 20px rgba(0,0,0,0.08)"
             : "none",
-          transition: "all 0.5s ease",
+          transition:
+            "background-color 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease",
           fontFamily: "Google Sans Text",
         }}
       >
@@ -138,31 +124,28 @@ export default function Navbar({ dark, setDark, activeSection }) {
                     key={link.id}
                     onClick={() => scrollTo(link.id)}
                     style={{
+                      position: "relative",
                       padding: "8px 16px",
                       borderRadius: 12,
                       fontSize: 16,
                       fontWeight: 500,
                       border: "none",
                       cursor: "pointer",
-                      transition: "all 0.3s ease",
-                      backgroundColor: isActive
-                        ? dark
-                          ? "#ffffff" // dark mode active → white bg
-                          : "#18181b" // light mode active → black bg
-                        : "transparent",
+                      background: "transparent",
+                      // Color transitions smoothly via CSS
                       color: isActive
                         ? dark
-                          ? "#18181b" // dark mode active → black text (on white)
-                          : "#ffffff" // light mode active → white text (on black)
+                          ? "#18181b" // on white pill in dark mode
+                          : "#ffffff" // on black pill in light mode
                         : dark
                           ? "#a1a1aa"
                           : "#71717a",
+                      transition: "color 0.2s ease",
+                      // Raise above the sliding pill so text is always on top
+                      zIndex: 1,
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive) {
-                        e.currentTarget.style.backgroundColor = dark
-                          ? "rgba(255,255,255,0.08)"
-                          : "rgba(0,0,0,0.06)";
                         e.currentTarget.style.color = dark
                           ? "#e4e4e7"
                           : "#18181b";
@@ -170,13 +153,32 @@ export default function Navbar({ dark, setDark, activeSection }) {
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
-                        e.currentTarget.style.backgroundColor = "transparent";
                         e.currentTarget.style.color = dark
                           ? "#a1a1aa"
                           : "#71717a";
                       }
                     }}
                   >
+                    {/* Sliding active pill — sits behind the text via z-index */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          borderRadius: 12,
+                          backgroundColor: dark ? "#ffffff" : "#18181b",
+                          zIndex: -1,
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 260,
+                          damping: 28,
+                          mass: 0.8,
+                        }}
+                      />
+                    )}
+
                     {link.label}
                   </button>
                 );
@@ -204,7 +206,13 @@ export default function Navbar({ dark, setDark, activeSection }) {
                   }}
                 >
                   Resume
-                  <ChevronDown size={16} />
+                  <motion.span
+                    animate={{ rotate: resumeOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    style={{ display: "flex" }}
+                  >
+                    <ChevronDown size={16} />
+                  </motion.span>
                 </button>
 
                 <AnimatePresence>
@@ -231,7 +239,6 @@ export default function Navbar({ dark, setDark, activeSection }) {
                         boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
                       }}
                     >
-                      {/* View Resume */}
                       <a
                         href="/resume.pdf"
                         target="_blank"
@@ -251,7 +258,6 @@ export default function Navbar({ dark, setDark, activeSection }) {
                         View Resume
                       </a>
 
-                      {/* Download PDF */}
                       <a
                         href="/resume.pdf"
                         download="Akash_Vishwakarma_Resume.pdf"
@@ -304,13 +310,7 @@ export default function Navbar({ dark, setDark, activeSection }) {
 
           {/* Mobile Controls */}
           {isMobile && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <button
                 onClick={() => setDark(!dark)}
                 style={{
@@ -401,7 +401,6 @@ export default function Navbar({ dark, setDark, activeSection }) {
               </motion.button>
             ))}
 
-            {/* Mobile Resume Links */}
             <a
               href="/resume.pdf"
               target="_blank"
