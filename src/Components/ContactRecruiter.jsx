@@ -121,11 +121,11 @@ export default function ContactRecruiter({ dark }) {
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
                 rel={href.startsWith("http") ? "noreferrer" : undefined}
-                className="flex min-h-12 items-center gap-3 rounded-md border px-4 text-sm font-semibold transition hover:opacity-75"
+                className="flex min-h-12 min-w-0 items-center gap-3 rounded-md border px-4 text-sm font-semibold transition hover:opacity-75"
                 style={{ borderColor: line, color: text, background: panel }}
               >
-                <Icon size={17} style={{ color: theme.accent }} />
-                <span className="break-all">{label}</span>
+                <Icon className="shrink-0" size={17} style={{ color: theme.accent }} />
+                <span className="min-w-0 break-all">{label}</span>
               </a>
             ))}
           </div>
@@ -134,7 +134,7 @@ export default function ContactRecruiter({ dark }) {
         <FadeIn delay={0.1}>
           <form
             onSubmit={handleSubmit}
-            className="border p-5 shadow-sm sm:p-6"
+            className="min-w-0 border p-5 shadow-sm sm:p-6"
             style={{
               background: panel,
               borderColor: line,
@@ -210,7 +210,7 @@ export default function ContactRecruiter({ dark }) {
             {error && (
               <p className="mt-3 text-center text-sm font-semibold text-red-500" style={{ fontFamily: theme.fonts.body }}>{error}</p>
             )}
-            <p className="mt-4 text-center text-xs leading-6" style={{ color: muted, fontFamily: theme.fonts.body }}>
+            <p className="mt-4 break-words text-center text-xs leading-6" style={{ color: muted, fontFamily: theme.fonts.body }}>
               Direct email fallback is always available: {resumeData.email}
             </p>
           </form>

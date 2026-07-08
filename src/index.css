@@ -7,8 +7,13 @@ body {
   margin: 0;
   height: 100%;
   overscroll-behavior: none;
+  overflow-x: hidden;
 }
 
 * {
   box-sizing: border-box;
+}
+
+#root {
+  overflow-x: hidden;
 }

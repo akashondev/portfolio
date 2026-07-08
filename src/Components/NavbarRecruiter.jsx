@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { FileText, Menu, Moon, Sun, X } from "lucide-react";
 import { navLinks } from "../data";
@@ -14,6 +15,15 @@ export default function NavbarRecruiter({ dark, setDark, activeSection }) {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -107,43 +117,67 @@ export default function NavbarRecruiter({ dark, setDark, activeSection }) {
         </div>
       </div>
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-inherit px-5 py-5 lg:hidden" style={{ color: text }}>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-black uppercase tracking-[0.18em]">Akash V.</span>
-            <button
-              onClick={() => setOpen(false)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md border"
-              style={{ borderColor: line }}
-              aria-label="Close navigation"
-            >
-              <X size={19} />
-            </button>
-          </div>
-          <div className="mt-10 grid gap-2">
-            {navLinks.map((link) => (
+      {open &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex flex-col px-5 py-5 lg:hidden"
+            style={{
+              color: text,
+              background: dark ? "#0a0a0f" : "#ffffff",
+            }}
+          >
+            <div className="flex h-10 items-center justify-between">
+              <span className="text-sm font-black uppercase tracking-[0.18em]">
+                Akash V.
+              </span>
               <button
-                key={link.id}
-                onClick={() => scrollTo(link.id)}
-                className="rounded-md border px-4 py-3 text-left text-lg font-bold"
-                style={{ borderColor: line, color: activeSection === link.id ? theme.accent : text }}
+                onClick={() => setOpen(false)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-md border"
+                style={{ borderColor: line }}
+                aria-label="Close navigation"
               >
-                {link.label}
+                <X size={19} />
               </button>
-            ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-2 inline-flex min-h-12 items-center gap-2 rounded-md px-4 text-lg font-bold text-white"
-              style={{ background: theme.accent }}
-            >
-              <FileText size={18} />
-              View resume
-            </a>
-          </div>
-        </div>
-      )}
+            </div>
+
+            <div className="mt-8 grid gap-2">
+              {navLinks.map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => scrollTo(link.id)}
+                  className="rounded-md border px-4 py-3 text-left text-lg font-bold"
+                  style={{
+                    borderColor: line,
+                    color: activeSection === link.id ? theme.accent : text,
+                    background:
+                      activeSection === link.id
+                        ? dark
+                          ? "rgba(255,255,255,0.06)"
+                          : "rgba(77,73,252,0.08)"
+                        : "transparent",
+                  }}
+                >
+                  {link.label}
+                </button>
+              ))}
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-4 text-lg font-bold text-white"
+                style={{ background: theme.accent }}
+              >
+                <FileText size={18} />
+                View resume
+              </a>
+            </div>
+          </motion.div>,
+          document.body,
+        )}
     </nav>
   );
 }

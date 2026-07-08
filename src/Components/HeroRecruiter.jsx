@@ -102,7 +102,7 @@ export default function HeroRecruiter({ dark }) {
             </motion.button>
           </motion.div>
 
-          <motion.div variants={heroItem} className="mt-8 flex items-center gap-3">
+          <motion.div variants={heroItem} className="mt-8 flex min-w-0 flex-wrap items-center gap-3">
             <motion.a
               href={resumeData.github}
               target="_blank"
@@ -127,7 +127,7 @@ export default function HeroRecruiter({ dark }) {
             </motion.a>
             <a
               href={`mailto:${resumeData.email}`}
-              className="text-sm font-semibold underline-offset-4 hover:underline"
+              className="min-w-0 max-w-full break-all text-sm font-semibold underline-offset-4 hover:underline"
               style={{ color: muted, fontFamily: theme.fonts.body }}
             >
               {resumeData.email}

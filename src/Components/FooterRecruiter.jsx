@@ -73,12 +73,12 @@ export default function FooterRecruiter({ dark }) {
             </p>
             <div className="grid gap-2">
               <a
-                className="inline-flex items-center gap-2 text-sm text-white/65 hover:text-white"
+                className="inline-flex min-w-0 items-center gap-2 text-sm text-white/65 hover:text-white"
                 href={`mailto:${resumeData.email}`}
                 style={{ fontFamily: theme.fonts.body }}
               >
-                <Mail size={15} style={{ color: theme.accent }} />
-                <span className="break-all">{resumeData.email}</span>
+                <Mail className="shrink-0" size={15} style={{ color: theme.accent }} />
+                <span className="min-w-0 break-all">{resumeData.email}</span>
               </a>
               <a
                 className="inline-flex items-center gap-2 text-sm text-white/65 hover:text-white"
