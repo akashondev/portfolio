@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { resumeData } from "../data";
 
-import { ExternalLink } from "lucide-react";
 import { FaCertificate } from "react-icons/fa";
 
 /* ── Helpers ── */
@@ -114,17 +113,6 @@ function Projectss({ dark }) {
                     {proj.title}
                   </h3>
 
-                  {proj.link && (
-                    <a
-                      href={proj.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-1 text-xs font-semibold transition-opacity hover:opacity-80"
-                      style={{ color: dark ? "#7c77fe" : "#4D49FC" }}
-                    >
-                      Live <ExternalLink size={13} />
-                    </a>
-                  )}
                 </div>
 
                 {/* Description */}

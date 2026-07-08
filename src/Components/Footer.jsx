@@ -1,6 +1,5 @@
 // Footer.jsx
 
-import { useRef } from "react";
 import { motion } from "framer-motion";
 import { resumeData } from "../data.js";
 import { Mail, Phone } from "lucide-react";
@@ -23,25 +22,6 @@ const SOCIALS = [
 const ACCENT = "#4D49FC";
 const ACCENT_BG = "rgba(77,73,252,0.14)";
 const ACCENT_BORDER = "rgba(77,73,252,0.5)";
-
-const IconBox = ({ Icon, size = 36 }) => (
-  <div
-    style={{
-      width: size,
-      height: size,
-      borderRadius: 9,
-      background: "rgba(255,255,255,0.07)",
-      border: "1px solid rgba(255,255,255,0.1)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      flexShrink: 0,
-      transition: "background 0.2s, border-color 0.2s",
-    }}
-  >
-    <Icon size={16} color="rgba(255,255,255,0.55)" />
-  </div>
-);
 
 export default function Footer({ dark }) {
   return (

@@ -1,50 +1,76 @@
 import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { navLinks } from "./data";
 import "./App.css";
 
-import Navbar from "./Components/Navbar";
-import Hero from "./Components/Hero";
-import About from "./Components/About";
-import Projects from "./Components/Projects";
-import Footer from "./Components/Footer";
+import Navbar from "./Components/NavbarRecruiter";
+import Hero from "./Components/HeroRecruiter";
+import Projects from "./Components/ProjectsRecruiter";
+import About from "./Components/AboutRecruiter";
+import Footer from "./Components/FooterRecruiter";
 
 export default function App() {
-  const [dark, setDark] = useState(false);
-  const [activeSection, setActiveSection] = useState("hero");
-
-  const { scrollYProgress } = useScroll();
-  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
-  // Persist theme
-  useEffect(() => {
+  const [dark, setDark] = useState(() => {
     try {
-      const saved = localStorage.getItem("theme");
-      if (saved) setDark(saved === "dark");
-    } catch {}
-  }, []);
+      return localStorage.getItem("theme") === "dark";
+    } catch {
+      return false;
+    }
+  });
+  const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => {
     try {
       localStorage.setItem("theme", dark ? "dark" : "light");
-    } catch {}
+    } catch {
+      // Ignore storage errors in private or restricted browser contexts.
+    }
   }, [dark]);
 
   // Active section observer
   useEffect(() => {
+    const setNearestSection = () => {
+      const viewportAnchor = window.innerHeight * 0.28;
+      const documentBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8;
+
+      if (documentBottom) {
+        setActiveSection(navLinks[navLinks.length - 1].id);
+        return;
+      }
+
+      const nearest = navLinks
+        .map(({ id }) => {
+          const el = document.getElementById(id);
+          if (!el) return null;
+          return {
+            id,
+            distance: Math.abs(el.getBoundingClientRect().top - viewportAnchor),
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.distance - b.distance)[0];
+
+      if (nearest) setActiveSection(nearest.id);
+    };
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActiveSection(e.target.id);
-        });
-      },
-      { rootMargin: "-40% 0px -55% 0px" },
+      () => setNearestSection(),
+      { rootMargin: "-15% 0px -55% 0px", threshold: [0, 0.1, 0.3] },
     );
     navLinks.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-    return () => observer.disconnect();
+
+    setNearestSection();
+    window.addEventListener("scroll", setNearestSection, { passive: true });
+    window.addEventListener("resize", setNearestSection);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", setNearestSection);
+      window.removeEventListener("resize", setNearestSection);
+    };
   }, []);
 
   return (
@@ -56,23 +82,10 @@ export default function App() {
         minHeight: "100vh",
       }}
     >
-      {/* Scroll progress bar */}
-      <motion.div
-        style={{
-          width: progressWidth,
-          position: "fixed",
-          top: 0,
-          left: 0,
-          height: 2,
-          zIndex: 999,
-          background: "#7c77fe",
-        }}
-      />
-
       <Navbar dark={dark} setDark={setDark} activeSection={activeSection} />
       <Hero dark={dark} />
-      <About dark={dark} />
       <Projects dark={dark} />
+      <About dark={dark} />
       <Footer dark={dark} />
     </div>
   );

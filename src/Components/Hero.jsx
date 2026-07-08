@@ -7,17 +7,17 @@ import {
   FaLinkedin as LinkedInIcon,
 } from "react-icons/fa";
 
+const HERO_ROLES = ["Computer Science Graduate", "Full-Stack Developer"];
+
 export default function Hero({ dark }) {
   const scrollTo = (id) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-
-  const roles = ["Computer Science Graduate", "Full-Stack Developer"];
 
   const [roleIndex, setRoleIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length);
+      setRoleIndex((prev) => (prev + 1) % HERO_ROLES.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -125,7 +125,7 @@ export default function Hero({ dark }) {
         >
           <AnimatePresence mode="wait">
             <motion.span
-              key={roles[roleIndex]}
+              key={HERO_ROLES[roleIndex]}
               initial="hidden"
               animate="visible"
               exit={{ opacity: 0, transition: { duration: 0.2 } }}
@@ -143,7 +143,7 @@ export default function Hero({ dark }) {
                 willChange: "opacity",
               }}
             >
-              {roles[roleIndex].split("").map((letter, i) => (
+              {HERO_ROLES[roleIndex].split("").map((letter, i) => (
                 <motion.span
                   key={i}
                   variants={{
